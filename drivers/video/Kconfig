@@ -1,0 +1,74 @@
+#
+# Video configuration
+#
+
+menu "Graphics support"
+	depends on HAS_IOMEM
+
+config HAVE_FB_ATMEL
+	bool
+
+config SH_MIPI_DSI
+	tristate
+	depends on (SUPERH || ARCH_SHMOBILE) && HAVE_CLK
+
+config SH_LCD_MIPI_DSI
+	bool
+
+source "drivers/char/agp/Kconfig"
+
+source "drivers/gpu/vga/Kconfig"
+
+source "drivers/gpu/host1x/Kconfig"
+source "drivers/gpu/ipu-v3/Kconfig"
+source "drivers/gpu/msm/Kconfig"
+
+menu "Direct Rendering Manager"
+source "drivers/gpu/drm/Kconfig"
+endmenu
+
+menu "Frame buffer Devices"
+source "drivers/video/fbdev/Kconfig"
+endmenu
+
+source "drivers/video/backlight/Kconfig"
+source "drivers/video/adf/Kconfig"
+
+config VGASTATE
+       tristate
+       default n
+
+config VIDEOMODE_HELPERS
+	bool
+
+config HDMI
+	bool
+# NTGRSTART
+config FB_ST7789S
+	tristate "ST7789S controlled LCD"
+	depends on FB
+	select FB_SYS_FILLRECT
+	select FB_SYS_COPYAREA
+	select FB_SYS_IMAGEBLIT
+	select FB_SYS_FOPS
+	select FB_DEFERRED_IO
+	select BACKLIGHT_LCD_SUPPORT
+	select BACKLIGHT_CLASS_DEVICE
+	help
+	  ST7789s support
+	default n
+
+# NTGRSTOP
+
+
+if VT
+	source "drivers/video/console/Kconfig"
+endif
+
+if FB || SGI_NEWPORT_CONSOLE
+	source "drivers/video/logo/Kconfig"
+
+endif
+
+
+endmenu
